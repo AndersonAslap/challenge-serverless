@@ -20,18 +20,29 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     const  { user_id } = event.pathParameters;
     const { title, deadline } = JSON.parse(event.body) as IRequest;
 
-    const todo : ITodo = {
-        id: uuidv4(),
-        user_id,
-        title,
-        done: false,
-        deadline
-    }
+    await document.put({
+        TableName: "todos",
+        Item: {
+            id: uuidv4(),
+            user_id,
+            title,
+            done: false,
+            deadline,
+            created_at: new Date()
+        }
+    }).promise();
     
     return {
         statusCode: 201,
         body: JSON.stringify({
-            todo
+        todo: {
+            id: uuidv4(),
+            user_id,
+            title,
+            done: false,
+            deadline,
+            created_at: new Date().getTime()
+        }
         })
     }
 }

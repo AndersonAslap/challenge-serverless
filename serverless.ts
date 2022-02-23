@@ -56,6 +56,14 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    dynamodb: {
+      stages: ["dev", "local"],
+      start: {
+        port: 8000,
+        inMemory: true,
+        migrate: true
+      }
+    }
   },
 
   resources: {

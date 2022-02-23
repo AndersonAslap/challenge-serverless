@@ -12,11 +12,21 @@ interface ITodo {
 export const handler: APIGatewayProxyHandler = async (event) => {
     
     const  { user_id } = event.pathParameters;
-    
+
+    const response = await document.query({
+        TableName: "todos",
+        KeyConditionExpression: "user_id = :id",
+        ExpressionAttributeValues: {
+            ":id": user_id,
+        }
+    }).promise();
+
+    let todos = response.Items;
+
     return {
         statusCode: 200,
         body: JSON.stringify({
-            user_id
+            todos
         })
     }
 }
